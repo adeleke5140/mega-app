@@ -32,8 +32,9 @@ export const unpkgPathPlugin = () => {
                     return {
                         loader: 'jsx',
                         contents: `
-                    const message = require('nested-test-pkg')
-                    console.log(message)
+                    import axios from 'axios'
+                    import react from 'react'
+                    console.log(axios, react)
                 `
                     }
                 } 

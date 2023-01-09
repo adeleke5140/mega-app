@@ -2,10 +2,15 @@ import { useEffect, useState, useRef } from "react"
 import * as esbuild from 'esbuild-wasm'
 import { unpkgPathPlugin } from "./custom-plugin"
 
+
+console.log('import.meta\u200b.env.MODE')
+console.log(import.meta.env.VITE_NODE_ENV)
+
 function App() {
   const ref = useRef<esbuild.Service>()
   const [input, setInput] = useState('')
   const [code, setCode] = useState('')
+  const env = import.meta.env.PROD.valueOf
 
   const startService = async () => {
     ref.current = await esbuild.startService({
@@ -27,7 +32,11 @@ function App() {
       entryPoints: ['index.js'],
       bundle: true,
       write: false,
-      plugins: [unpkgPathPlugin()]
+      plugins: [unpkgPathPlugin()],
+      define:  {
+        global: "window",
+        'import.meta\u200b.env.MODE': '"production"'
+      }
     })
     setCode(result.outputFiles[0].text)
   }
